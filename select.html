@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css">
+  	<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
+  	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+	<script src="faker.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+	<style>
+	#waiting {
+	 
+	  font-size: 23px;
+	   background: #666;
+	  border-radius: 5px;
+	  border: 1px solid #333;
+	  padding: 3px 9px;
+	  color: white;
+	  text-align: center;
+	  z-index: 100;
+}
+
+
+.select2-search__field {
+	font-size:16px;
+}
+</style>
+
+</head>
+<body>
+<div id="waiting">Loading...</div>
+<div class="container">
+<div class="alert alert-info status"></div>
+	<div class="row">
+
+		<div class="col-sm-4"><h2>Generate dataset</h2></div>
+		<div class="col-sm-6"><br><input id="number" type="text" class="form-control" placeholder="enter number" value="1000"></div>
+		<div class="col-sm-2"><br><button id="generate" class="btn btn-primary">Generate Dataset</button></div>
+
+	</div>
+
+	<hr>
+	<div class="row">
+		<div class="col-sm-12">
+			<h4>Select Single</h4>
+			<select id="selectSingle" class="form-control"></select>
+
+		</div>
+	</div>
+</div>
+
+
+</body>
+
+<script type="text/javascript">
+	
+	$(document).ready(function() {
+
+		var n = $("#number").val()
+		$("#generate").click(function(){
+			$("#waiting").show();
+			var fakes = [];
+			var n = $("#number").val();
+
+			generateFakers(n);
+		});
+
+		generateFakers(n);
+
+		function generateFakers(n){
+			var fakes = []
+			
+				for (var i=0; i<n; i++){
+					
+					 var text = "";
+					 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+					    for( var a=0; a < 3; a++ )
+					        text += possible.charAt(Math.floor(Math.random() * possible.length));
+					var num = faker.finance.account();
+					fakes.push(
+						text + num + '-' + i
+					)
+				}
+			//
+			buildSelect(fakes);
+			$(".status").text(n + ' results loaded');
+			console.log(fakes);
+		};
+
+		function buildSelect(options){
+		 	$("#selectSingle").select2({ data: options });	
+			$("#waiting").hide();
+		};
+
+		function waiting(){
+			//$("#waiting").hide();
+		}
+
+	});
+
+</script>
+
+</html>
